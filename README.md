@@ -1,5 +1,7 @@
 # Lost & Found Web App
 
+See demo on: https://lostandfound-a6141.web.app/
+
 Lost & Found is a web application designed to help individuals in the city of Wroclaw to post and search for lost items within their community. The platform aims to provide a user-friendly and comprehensive solution for lost and found items.
 
 ## Features
