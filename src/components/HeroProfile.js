@@ -10,9 +10,9 @@ const HeroProfile = () => {
           <img
             src={profileImage}
             alt="Profile"
-            className="w-32 h-32 object-cover rounded-full border-4 border-red-300"
+            className="w-32 h-32 object-cover rounded-full border-4 border-lostColor"
           />
-          <button className="absolute bottom-1 right-1 bg-red-300 text-black p-2 rounded-full">
+          <button className="absolute bottom-1 right-1 bg-lostColor text-black p-2 rounded-full">
             <MdEdit className="w-4 h-4" />
           </button>
         </div>
