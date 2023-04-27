@@ -1,12 +1,13 @@
 import React from "react";
 import { RiEditBoxFill } from "react-icons/ri";
+import { AiFillDelete } from "react-icons/ai";
 
 const AccountSettings = () => {
   const settingsOptions = [
     {
       id: 1,
       title: "Notification Preferences",
-      content: "Configure your notification settings",
+      content: "Email, Push, and SMS notifications",
     },
     {
       id: 2,
@@ -31,8 +32,18 @@ const AccountSettings = () => {
               className="flex items-center justify-center text-black border border-mintGreen py-2 px-6 rounded-md"
               type="button"
             >
-              <RiEditBoxFill className="mr-1" />
-              Change
+              {/* if it is delete button make it delete icon */}
+              {option.id === 2 ? (
+                <div className="text-lostColor flex items-center justify-center">
+                  <AiFillDelete className="mr-1" />
+                  Delete
+                </div>
+              ) : (
+                <>
+                  <RiEditBoxFill className="mr-1" />
+                  Change
+                </>
+              )}
             </button>
           </div>
         ))}
