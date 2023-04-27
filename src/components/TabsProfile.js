@@ -1,24 +1,44 @@
 import { useState } from "react";
 
+import AccountDetails from "./AccountDetails";
+import AccountSettings from "./AccountSettings";
+
 const tabs = [
   {
     id: 1,
     title: "Posts",
     content: (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Replace the divs below with your actual Post components */}
-        <div className="bg-gray-300 h-24"></div>
-        <div className="bg-gray-300 h-24"></div>
-        <div className="bg-gray-300 h-24"></div>
-      </div>
+      <>
+        <h1 className="text-left font-bold text-4xl mb-4">Posts</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Replace the divs below with your actual Post components */}
+          <div className="bg-gray-300 h-24"></div>
+          <div className="bg-gray-300 h-24"></div>
+          <div className="bg-gray-300 h-24"></div>
+        </div>
+      </>
     ),
   },
   {
     id: 2,
     title: "Account Details",
-    content: <p>Dummy text for account details</p>,
+    content: (
+      <>
+        <h1 className="text-left font-bold text-4xl mb-4">Account Details</h1>
+        <AccountDetails />
+      </>
+    ),
   },
-  { id: 3, title: "Settings", content: <p>Dummy text for settings</p> },
+  {
+    id: 3,
+    title: "Settings",
+    content: (
+      <>
+        <h1 className="text-left font-bold text-4xl mb-4">Settings</h1>
+        <AccountSettings />
+      </>
+    ),
+  },
 ];
 
 const Tabs = () => {

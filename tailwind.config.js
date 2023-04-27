@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         lostColor: "#FF8682",
         foundColor: "#4E60FF",
+        mintGreen: "#8DD3BB",
       },
     },
   },
