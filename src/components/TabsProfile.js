@@ -43,7 +43,6 @@ const tabs = [
       <>
         <h1 className="text-left font-bold text-4xl mb-4">Posts</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center mx-auto">
-          {/* Replace the divs below with your actual Post components */}
           {items.map((item) => (
             <ItemCard key={item.id} item={item} />
           ))}
@@ -94,7 +93,9 @@ const Tabs = () => {
         ))}
       </div>
       <div className="p-4">
-        {tabs.map((tab) => (activeTab === tab.id ? tab.content : null))}
+        {tabs.map((tab) =>
+          activeTab === tab.id ? <span key={tab.id}>{tab.content}</span> : null
+        )}
       </div>
     </div>
   );

@@ -7,9 +7,10 @@ import DropdownMenu from "./DropdownMenu";
 const ItemCard = ({ item }) => {
   const isLost = item.status === "lost";
   const statusColor = isLost ? "lostColor" : "foundColor";
+  console.log(statusColor);
 
   return (
-    <div className="relative w-[350px] h-88 bg-white rounded-lg shadow">
+    <div className="relative w-[350px] h-88 bg-white rounded-lg shadow ">
       <img
         src={item.image}
         alt={item.title}
@@ -36,7 +37,7 @@ const ItemCard = ({ item }) => {
 
       <div
         className={`uppercase font-bold px-4 py-1 rounded-bl-lg rounded-tr-lg bg-${statusColor} absolute top-0 right-0 ${
-          item.status.toLowerCase() === "lost" ? "text-black" : "text-white"
+          isLost ? "text-black" : "text-white"
         } text-sm`}
       >
         {item.status}
