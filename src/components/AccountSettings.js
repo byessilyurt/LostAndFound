@@ -47,7 +47,7 @@ const AccountSettings = () => {
               ) : option.id === 3 ? (
                 <div className="text-lostColor flex items-center justify-center">
                   <BiLogOut className="mr-1" />
-                  Sing Out
+                  Sign Out
                 </div>
               ) : (
                 <>
