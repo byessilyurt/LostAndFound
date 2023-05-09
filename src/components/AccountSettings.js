@@ -1,6 +1,7 @@
 import React from "react";
 import { RiEditBoxFill } from "react-icons/ri";
-import { AiFillAlert, AiFillDelete, AiFillRead } from "react-icons/ai";
+import { AiFillDelete, AiFillRead } from "react-icons/ai";
+import { BiLogOut } from "react-icons/bi";
 
 const AccountSettings = () => {
   const settingsOptions = [
@@ -16,8 +17,8 @@ const AccountSettings = () => {
     },
         {
       id: 3,
-      title: "Sing Out",
-      content: "Sing out from this account",
+      title: "Sign Out",
+      content: "Sign out from this account",
     },
   ];
 
@@ -45,7 +46,7 @@ const AccountSettings = () => {
                 </div>
               ) : option.id === 3 ? (
                 <div className="text-lostColor flex items-center justify-center">
-                  <AiFillAlert className="mr-1" />
+                  <BiLogOut className="mr-1" />
                   Sing Out
                 </div>
               ) : (
