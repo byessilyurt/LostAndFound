@@ -1,6 +1,6 @@
 import React from "react";
 import { RiEditBoxFill } from "react-icons/ri";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillAlert, AiFillDelete, AiFillRead } from "react-icons/ai";
 
 const AccountSettings = () => {
   const settingsOptions = [
@@ -13,6 +13,11 @@ const AccountSettings = () => {
       id: 2,
       title: "Delete Account",
       content: "Permanently delete your account",
+    },
+        {
+      id: 3,
+      title: "Sing Out",
+      content: "Sing out from this account",
     },
   ];
 
@@ -38,12 +43,18 @@ const AccountSettings = () => {
                   <AiFillDelete className="mr-1" />
                   Delete
                 </div>
+              ) : option.id === 3 ? (
+                <div className="text-lostColor flex items-center justify-center">
+                  <AiFillAlert className="mr-1" />
+                  Sing Out
+                </div>
               ) : (
                 <>
                   <RiEditBoxFill className="mr-1" />
                   Change
                 </>
               )}
+              
             </button>
           </div>
         ))}
