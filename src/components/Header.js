@@ -39,6 +39,9 @@ function Header() {
               <Link to="/post-new-item">Post New Item</Link>
             </li>
             <li>
+              <Link to="/item/:id">Item Detail</Link>
+            </li>
+            <li>
               <Link to="/my-account">My Account</Link>
             </li>
           </>
