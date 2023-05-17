@@ -4,13 +4,14 @@ import { RiErrorWarningLine } from "react-icons/ri";
 
 import DropdownMenu from "./DropdownMenu";
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ item, onItemCardClick }) => {
   const isLost = item.status === "lost";
   const statusColor = isLost ? "lostColor" : "foundColor";
   console.log(statusColor);
 
   return (
-    <div className="relative w-[350px] h-88 bg-white rounded-lg shadow ">
+    <div className="relative w-[350px] h-88 bg-white rounded-lg shadow " onClick={() => onItemCardClick(item)}>
+      
       <img
         src={item.image}
         alt={item.title}
