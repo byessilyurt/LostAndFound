@@ -1,8 +1,9 @@
 import { AiFillGithub, AiFillGoogleCircle } from "react-icons/ai";
 import logo from "../images/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function AuthForm({ isLogin }) {
+function AuthForm({ isLogin, setAuthenticated }) {
+  const navigate = useNavigate();
   const fields = {
     // put login fields if isLogin is true
     title: isLogin ? "Login" : "Sign Up",
@@ -59,7 +60,10 @@ function AuthForm({ isLogin }) {
     },
     button: {
       label: isLogin ? "Login" : "Sign Up",
-      onClick: () => {},
+      onClick: () => {
+        setAuthenticated(true);
+        navigate("/home");
+      },
     },
     forgotPassword: {
       render: isLogin,

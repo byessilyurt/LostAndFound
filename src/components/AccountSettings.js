@@ -1,6 +1,6 @@
 import React from "react";
 import { RiEditBoxFill } from "react-icons/ri";
-import { AiFillDelete, AiFillRead } from "react-icons/ai";
+import { AiFillDelete } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
 
 const AccountSettings = () => {
@@ -15,7 +15,7 @@ const AccountSettings = () => {
       title: "Delete Account",
       content: "Permanently delete your account",
     },
-        {
+    {
       id: 3,
       title: "Sign Out",
       content: "Sign out from this account",
@@ -55,7 +55,6 @@ const AccountSettings = () => {
                   Change
                 </>
               )}
-              
             </button>
           </div>
         ))}

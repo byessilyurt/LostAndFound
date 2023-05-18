@@ -3,38 +3,8 @@ import { useState } from "react";
 import AccountDetails from "./AccountDetails";
 import AccountSettings from "./AccountSettings";
 import ItemCard from "./ItemCard";
-import itemImg from "../images/item.png";
 import ItemDetailCard from "./ItemDetailCard";
-
-const items = [
-  {
-    id: 1,
-    title: "Item 1",
-    image: itemImg,
-    timeAgo: "1 hour ago",
-    location: "Location 1",
-    message: "Message 1",
-    status: "lost",
-  },
-  {
-    id: 2,
-    title: "Item 2",
-    image: itemImg,
-    timeAgo: "2 hours ago",
-    location: "Location 2",
-    message: "Message 2",
-    status: "found",
-  },
-  {
-    id: 3,
-    title: "Item 3",
-    image: itemImg,
-    timeAgo: "3 hours ago",
-    location: "Location 3",
-    message: "Message 3",
-    status: "lost",
-  },
-];
+import { items } from "../data";
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -51,14 +21,18 @@ const Tabs = () => {
   };
 
   const getTabContent = (id) => {
-    switch(id) {
-      case 1: 
+    switch (id) {
+      case 1:
         return (
           <>
             <h1 className="text-left font-bold text-4xl mb-4">Posts</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center mx-auto">
               {items.map((item) => (
-                <ItemCard key={item.id} item={item} onItemCardClick={handleItemClick} />
+                <ItemCard
+                  key={item.id}
+                  item={item}
+                  onItemCardClick={handleItemClick}
+                />
               ))}
             </div>
             {isModalOpen && selectedItem && (
@@ -66,10 +40,12 @@ const Tabs = () => {
             )}
           </>
         );
-      case 2: 
+      case 2:
         return (
           <>
-            <h1 className="text-left font-bold text-4xl mb-4">Account Details</h1>
+            <h1 className="text-left font-bold text-4xl mb-4">
+              Account Details
+            </h1>
             <AccountDetails />
           </>
         );
@@ -83,7 +59,7 @@ const Tabs = () => {
       default:
         return null;
     }
-  }
+  };
 
   const tabs = [
     { id: 1, title: "Posts" },
@@ -108,9 +84,7 @@ const Tabs = () => {
           </button>
         ))}
       </div>
-      <div className="p-4">
-        {getTabContent(activeTab)}
-      </div>
+      <div className="p-4">{getTabContent(activeTab)}</div>
     </div>
   );
 };

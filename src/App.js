@@ -1,4 +1,5 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Home from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
 import MyAccount from "./pages/MyAccountPage";
@@ -10,6 +11,7 @@ import AuthPage from "./pages/AuthPage";
 
 function App() {
   const location = useLocation();
+  const [authenticated, setAuthenticated] = useState(false);
   const shouldShowHeaderFooter = !(
     location.pathname === "/login" || location.pathname === "/signup"
   );
@@ -18,13 +20,28 @@ function App() {
     <div className="App">
       {shouldShowHeaderFooter && <Header />}
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<AuthPage />} />
+        <Route
+          path="/login"
+          element={<AuthPage setAuthenticated={setAuthenticated} />}
+        />
         <Route path="/signup" element={<AuthPage />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/post-new-item" element={<PostNewItem />} />
-        <Route path="/my-account" element={<MyAccount />} />
+        <Route
+          path="/home"
+          element={authenticated ? <Home /> : <Navigate to="/signup" />}
+        />
+        <Route
+          path="/post-new-item"
+          element={authenticated ? <PostNewItem /> : <Navigate to="/signup" />}
+        />
+        <Route
+          path="/my-account"
+          element={authenticated ? <MyAccount /> : <Navigate to="/signup" />}
+        />
+        <Route
+          path="/"
+          element={authenticated ? <LandingPage /> : <Navigate to="/signup" />}
+        />
       </Routes>
       {shouldShowHeaderFooter && <Footer />}
     </div>

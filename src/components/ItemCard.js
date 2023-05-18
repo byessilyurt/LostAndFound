@@ -7,16 +7,22 @@ import DropdownMenu from "./DropdownMenu";
 const ItemCard = ({ item, onItemCardClick }) => {
   const isLost = item.status === "lost";
   const statusColor = isLost ? "lostColor" : "foundColor";
-  console.log(statusColor);
 
   return (
-    <div className="relative w-[350px] h-88 bg-white rounded-lg shadow " onClick={() => onItemCardClick(item)}>
-      
-      <img
-        src={item.image}
-        alt={item.title}
-        className="w-full h-40 rounded-t-lg"
-      />
+    <div
+      className="relative w-[350px] h-88 bg-white rounded-lg shadow my-3 "
+      onClick={() => onItemCardClick(item)}
+    >
+      <div className="relative w-full pb-[56.25%]">
+        {" "}
+        {/* 56.25% for a 16:9 aspect ratio */}
+        <img
+          src={item.image}
+          alt={item.title}
+          className="absolute inset-0 w-full h-full rounded-t-lg object-cover" // Full coverage of the parent
+        />
+      </div>
+
       <div className="p-4">
         <div className="flex justify-between items-center mb-2">
           <h3 className="text-lg font-bold">{item.title}</h3>

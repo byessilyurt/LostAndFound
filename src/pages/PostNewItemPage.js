@@ -65,7 +65,7 @@ function PostNewItemPage() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center bg-violet-500 h-screen">
+    <div className="flex justify-center items-center bg-foundColor bg-opacity-20 h-screen">
       <div class="w-3/4 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mx-auto">
         <h2 className="text-2xl font-bold py-2 px-4 mb-3 text-gray-700">
           Post a New Item
