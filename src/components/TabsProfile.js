@@ -4,6 +4,7 @@ import AccountDetails from "./AccountDetails";
 import AccountSettings from "./AccountSettings";
 import ItemCard from "./ItemCard";
 import itemImg from "../images/item.png";
+import ItemDetailCard from "./ItemDetailCard";
 
 const items = [
   {
@@ -35,45 +36,60 @@ const items = [
   },
 ];
 
-const tabs = [
-  {
-    id: 1,
-    title: "Posts",
-    content: (
-      <>
-        <h1 className="text-left font-bold text-4xl mb-4">Posts</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center mx-auto">
-          {items.map((item) => (
-            <ItemCard key={item.id} item={item} />
-          ))}
-        </div>
-      </>
-    ),
-  },
-  {
-    id: 2,
-    title: "Account Details",
-    content: (
-      <>
-        <h1 className="text-left font-bold text-4xl mb-4">Account Details</h1>
-        <AccountDetails />
-      </>
-    ),
-  },
-  {
-    id: 3,
-    title: "Settings",
-    content: (
-      <>
-        <h1 className="text-left font-bold text-4xl mb-4">Settings</h1>
-        <AccountSettings />
-      </>
-    ),
-  },
-];
-
 const Tabs = () => {
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
+  const [activeTab, setActiveTab] = useState(1);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const getTabContent = (id) => {
+    switch(id) {
+      case 1: 
+        return (
+          <>
+            <h1 className="text-left font-bold text-4xl mb-4">Posts</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center mx-auto">
+              {items.map((item) => (
+                <ItemCard key={item.id} item={item} onItemCardClick={handleItemClick} />
+              ))}
+            </div>
+            {isModalOpen && selectedItem && (
+              <ItemDetailCard item={selectedItem} onClose={closeModal} />
+            )}
+          </>
+        );
+      case 2: 
+        return (
+          <>
+            <h1 className="text-left font-bold text-4xl mb-4">Account Details</h1>
+            <AccountDetails />
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <h1 className="text-left font-bold text-4xl mb-4">Settings</h1>
+            <AccountSettings />
+          </>
+        );
+      default:
+        return null;
+    }
+  }
+
+  const tabs = [
+    { id: 1, title: "Posts" },
+    { id: 2, title: "Account Details" },
+    { id: 3, title: "Settings" },
+  ];
 
   return (
     <div>
@@ -93,9 +109,7 @@ const Tabs = () => {
         ))}
       </div>
       <div className="p-4">
-        {tabs.map((tab) =>
-          activeTab === tab.id ? <span key={tab.id}>{tab.content}</span> : null
-        )}
+        {getTabContent(activeTab)}
       </div>
     </div>
   );
