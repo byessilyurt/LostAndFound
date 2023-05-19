@@ -1,3 +1,5 @@
+//npm install react-native-web
+
 import { useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Home from "./pages/HomePage";
@@ -20,6 +22,11 @@ function App() {
     <div className="App">
       {shouldShowHeaderFooter && <Header />}
       <Routes>
+      <Route
+          path="/"
+          Component={LandingPage}          
+          element={authenticated ? <LandingPage /> : <Navigate to="/" />}
+      />
         <Route
           path="/login"
           element={<AuthPage setAuthenticated={setAuthenticated} />}
@@ -37,10 +44,6 @@ function App() {
         <Route
           path="/my-account"
           element={authenticated ? <MyAccount /> : <Navigate to="/signup" />}
-        />
-        <Route
-          path="/"
-          element={authenticated ? <LandingPage /> : <Navigate to="/signup" />}
         />
       </Routes>
       {shouldShowHeaderFooter && <Footer />}
