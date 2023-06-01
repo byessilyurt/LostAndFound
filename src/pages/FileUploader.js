@@ -1,57 +1,97 @@
-import { React, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
-function FileUploader({ onUpload }) {
+function FileUploader({ onUpload, reset }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const fileInputRef = useRef();
+  const storage = getStorage();
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const files = event.target.files;
-    setSelectedFiles([...selectedFiles, ...Array.from(files)]);
-    onUpload(Array.from(files));
-  };
+    const newFiles = Array.from(files);
+    setSelectedFiles([...selectedFiles, ...newFiles]);
 
-  const handleUpload = () => {
-    const formData = new FormData();
-    for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append("selectedFile", selectedFiles[i]);
+    for (let file of newFiles) {
+      const storageRef = ref(storage, `images/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((downloadURL) => {
+          onUpload({ file, url: downloadURL });
+        });
+      });
     }
-    onUpload(formData, selectedFiles);
-    setSelectedFiles([]);
   };
 
-  const removeSelectedImage = (index) => {
+  const removeSelectedImage = async (index) => {
+    const fileToRemove = selectedFiles[index];
+    const fileRef = ref(storage, `images/${fileToRemove.name}`);
+    await deleteObject(fileRef);
+
     const newFiles = [...selectedFiles];
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
+    onUpload({ file: fileToRemove, url: null });
   };
 
+  useEffect(() => {
+    if (reset) {
+      setSelectedFiles([]);
+      onUpload({ file: null, url: null });
+    }
+  }, [reset, onUpload]);
+
   const imagePreviews = selectedFiles.map((file, index) => (
-    <div key={file.name}>
-      <img src={URL.createObjectURL(file)} alt={file.name} />
-      <button onClick={() => removeSelectedImage(index)}>Remove This Image</button>
+    <div
+      key={file.name}
+      className="inline-block m-2 border border-gray-300 p-1 rounded overflow-hidden"
+    >
+      <img
+        src={URL.createObjectURL(file)}
+        alt={file.name}
+        className="h-24 w-auto object-cover"
+      />
+      <button type='button'
+        onClick={() => removeSelectedImage(index)}
+        className="block bg-red-500 hover:bg-red-700 text-white text-xs font-bold mt-1 px-2 py-1 rounded"
+      >
+        Remove This Image
+      </button>
     </div>
   ));
 
   return (
-    <div class="w-full bg-gray-200 rounded-lg p-4">
-      <div class="border-2 border-dashed border-gray-400 rounded-lg p-4 bg-white">
-        <div class="text-center">
-          <AiOutlineCloudUpload class="h-12 w-12 mx-auto mb-3" />
-          <p class="text-lg font-medium">Drop your image(s) here or browse</p>
-          <p class="text-xs">(max file size 5mb)</p>
-          <input type="file" onChange={handleFileChange} class="hidden" multiple />
-          <button
-            onClick={handleUpload}
-            class="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    <div className="w-full bg-gray-200 rounded-lg p-4">
+      <div className="border-2 border-dashed border-gray-400 rounded-lg p-4 bg-white">
+        <div className="text-center">
+          <AiOutlineCloudUpload className="h-12 w-12 mx-auto mb-3" />
+          <p className="text-lg font-medium">Drop your image(s) here or browse</p>
+          <p className="text-xs">(max file size 5mb)</p>
+          <input
+            type="file"
+            onChange={handleFileChange}
+            className="hidden"
+            multiple
+            ref={fileInputRef}
+          />
+          <button type='button'
+            onClick={() => fileInputRef.current.click()}
+            className="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
-            Upload
+            Select Files
           </button>
         </div>
       </div>
       {selectedFiles.length > 0 && (
         <div>
           <h2>Selected Files:</h2>
-          {imagePreviews}
+          <div className="flex flex-wrap">{imagePreviews}</div>
         </div>
       )}
     </div>
