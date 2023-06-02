@@ -1,5 +1,8 @@
+//npm install react-native-web
+
 import { useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { firebaseApp, analytics } from "./firebase";
 import Home from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
 import MyAccount from "./pages/MyAccountPage";
@@ -11,7 +14,7 @@ import AuthPage from "./pages/AuthPage";
 
 function App() {
   const location = useLocation();
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(true);
   const shouldShowHeaderFooter = !(
     location.pathname === "/login" || location.pathname === "/signup"
   );
@@ -20,6 +23,11 @@ function App() {
     <div className="App">
       {shouldShowHeaderFooter && <Header />}
       <Routes>
+        <Route
+          path="/"
+          Component={Home} // Update this line when landing page is ready
+          element={authenticated ? <div /> : <div />}
+        />
         <Route
           path="/login"
           element={<AuthPage setAuthenticated={setAuthenticated} />}
@@ -37,10 +45,6 @@ function App() {
         <Route
           path="/my-account"
           element={authenticated ? <MyAccount /> : <Navigate to="/signup" />}
-        />
-        <Route
-          path="/"
-          element={authenticated ? <LandingPage /> : <Navigate to="/signup" />}
         />
       </Routes>
       {shouldShowHeaderFooter && <Footer />}
