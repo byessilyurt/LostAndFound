@@ -1,5 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import React, { useEffect, useState } from "react";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Marker,
+  Circle,
+} from "@react-google-maps/api";
 
 const containerStyle = {
   width: "400px",
@@ -11,7 +16,7 @@ const center = {
   lng: 17.038538,
 };
 
-function MapLocationPicker({ mapLocation, setMapLocation }) {
+function MapLocationPicker({ mapLocation, setMapLocation, found = true }) {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -30,14 +35,12 @@ function MapLocationPicker({ mapLocation, setMapLocation }) {
 
   const onMapClick = React.useCallback(
     (event) => {
-      setMarkerPosition({
+      const newPosition = {
         lat: event.latLng.lat(),
         lng: event.latLng.lng(),
-      });
-      setMapLocation({
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng(),
-      });
+      };
+      setMarkerPosition(newPosition);
+      setMapLocation(newPosition);
     },
     [setMapLocation]
   );
@@ -70,12 +73,26 @@ function MapLocationPicker({ mapLocation, setMapLocation }) {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={10}
+      zoom={12}
       onLoad={onLoad}
       onUnmount={onUnmount}
       onClick={onMapClick}
     >
-      {markerPosition && <Marker position={markerPosition} />}
+      {found ? (
+        <Circle
+          center={markerPosition}
+          radius={500} // 800 meters
+          options={{
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.35,
+          }}
+        />
+      ) : (
+        markerPosition && <Marker position={markerPosition} />
+      )}
     </GoogleMap>
   ) : (
     <></>

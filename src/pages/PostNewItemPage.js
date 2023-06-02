@@ -118,8 +118,8 @@ function PostNewItemPage() {
         </h2>
         <hr className="border-gray-400 my-2 " />
         <form onSubmit={handleFormSubmit}>
-          <div className="md:grid md:grid-cols-2 gap-4">
-            <div className="border-r-2 border-gray-300 pr-4">
+          <div className="md:grid md:grid-cols-2 md:gap-4">
+            <div className="md:border-r-2 border-gray-300 md:pr-4">
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
@@ -128,26 +128,31 @@ function PostNewItemPage() {
                   Item Type:
                 </label>
                 <div className="mt-2">
-                  <input
-                    type="radio"
-                    id="lost"
-                    name="itemType"
-                    value="lost"
-                    checked={formData.itemType === "lost"}
-                    onChange={handleInputChange}
-                  />
-                  <label htmlFor="lost">Lost</label>
-                  <input
-                    type="radio"
-                    id="found"
-                    name="itemType"
-                    value="found"
-                    checked={formData.itemType === "found"}
-                    onChange={handleInputChange}
-                  />
-                  <label htmlFor="found">Found</label>
+                  <div className="relative inline-block w-full text-gray-700">
+                    <select
+                      id="itemType"
+                      name="itemType"
+                      value={formData.itemType}
+                      onChange={handleInputChange}
+                      className="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline"
+                    >
+                      <option value="">Select item type...</option>
+                      <option value="lost">Lost</option>
+                      <option value="found">Found</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                      <svg
+                        className="w-4 h-4 fill-current"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
+
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
@@ -202,25 +207,52 @@ function PostNewItemPage() {
               <MapsLocationPicker
                 mapLocation={mapLocation}
                 setMapLocation={setMapLocation}
+                found={formData.itemType === "found"}
               />
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="additionalInfo"
+                  htmlFor="description"
                 >
-                  Additional Info:
+                  Description:
                 </label>
                 <textarea
-                  id="additionalInfo"
-                  name="additionalInfo"
-                  placeholder="Enter additional information"
-                  value={formData.additionalInfo || ""}
+                  id="description"
+                  name="description"
+                  placeholder="Enter description"
+                  value={formData.description || ""}
                   onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-24"
                 />
               </div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="tags"
+                >
+                  Tags:
+                </label>
+                <select
+                  multiple={true}
+                  id="tags"
+                  name="tags"
+                  onChange={handleTagsChange}
+                  value={formData.tags || []}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                >
+                  <option value="">Select...</option>
+                  <option value="phone">Phone</option>
+                  <option value="airpods">AirPods</option>
+                  <option value="wallet">Wallet</option>
+                  <option value="watch">Watch</option>
+                  <option value="laptop">Laptop</option>
+                  <option value="bag">Bag</option>
+                  <option value="clothing">Clothing</option>
+                  <option value="accessory">Accessory</option>
+                </select>
+              </div>
             </div>
-            <div className="mt-4 md:mt-0 md:pl-4">
+            <div className="md:pl-4 mt-4 md:mt-0">
               <div className="flex flex-col items-center justify-center">
                 <div className="mb-4">
                   <label
