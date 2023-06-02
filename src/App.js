@@ -1,5 +1,8 @@
+//npm install react-native-web
+
 import { useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { firebaseApp, analytics } from './firebaseConfig';
 import Home from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
 import MyAccount from "./pages/MyAccountPage";
@@ -9,9 +12,10 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AuthPage from "./pages/AuthPage";
 
+
 function App() {
   const location = useLocation();
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(true);
   const shouldShowHeaderFooter = !(
     location.pathname === "/login" || location.pathname === "/signup"
   );
@@ -20,6 +24,11 @@ function App() {
     <div className="App">
       {shouldShowHeaderFooter && <Header />}
       <Routes>
+      <Route
+          path="/"
+          Component={LandingPage}          
+          element={authenticated ? <LandingPage /> : <Navigate to="/" />}
+      />
         <Route
           path="/login"
           element={<AuthPage setAuthenticated={setAuthenticated} />}
@@ -37,10 +46,6 @@ function App() {
         <Route
           path="/my-account"
           element={authenticated ? <MyAccount /> : <Navigate to="/signup" />}
-        />
-        <Route
-          path="/"
-          element={authenticated ? <LandingPage /> : <Navigate to="/signup" />}
         />
       </Routes>
       {shouldShowHeaderFooter && <Footer />}
