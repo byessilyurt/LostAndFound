@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { firebaseApp, analytics } from './firebaseConfig';
+import { firebaseApp, analytics } from "./firebase";
 import Home from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
 import MyAccount from "./pages/MyAccountPage";
@@ -11,7 +11,6 @@ import ResetPassword from "./pages/ResetPasswordPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AuthPage from "./pages/AuthPage";
-
 
 function App() {
   const location = useLocation();
@@ -24,11 +23,11 @@ function App() {
     <div className="App">
       {shouldShowHeaderFooter && <Header />}
       <Routes>
-      <Route
+        <Route
           path="/"
-          Component={LandingPage}          
-          element={authenticated ? <LandingPage /> : <Navigate to="/" />}
-      />
+          Component={Home} // Update this line when landing page is ready
+          element={authenticated ? <div /> : <div />}
+        />
         <Route
           path="/login"
           element={<AuthPage setAuthenticated={setAuthenticated} />}
