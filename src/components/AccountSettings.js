@@ -1,9 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { RiEditBoxFill } from "react-icons/ri";
 import { AiFillDelete } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AccountSettings = () => {
+  const auth = getAuth();
+  const navigate = useNavigate();
+
+  const signOutfromAccount = () => {
+    signOut(auth)
+      .then(() => {
+        localStorage.removeItem("user");
+        toast.info("Logging out!", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 1800,
+          onClose: () => navigate("/login"),
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const settingsOptions = [
     {
       id: 1,
@@ -19,6 +40,10 @@ const AccountSettings = () => {
       id: 3,
       title: "Sign Out",
       content: "Sign out from this account",
+      onClick: (e) => {
+        e.preventDefault();
+        signOutfromAccount();
+      },
     },
   ];
 
@@ -37,6 +62,7 @@ const AccountSettings = () => {
             <button
               className="flex items-center justify-center text-black border border-mintGreen py-2 px-6 rounded-md"
               type="button"
+              onClick={option.onClick ? option.onClick : () => {}}
             >
               {/* if it is delete button make it delete icon */}
               {option.id === 2 ? (

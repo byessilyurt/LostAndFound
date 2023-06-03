@@ -18,6 +18,7 @@ function AuthForm({ isLogin, setAuthenticated }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
 
   const signup = async () => {
     await createUserWithEmailAndPassword(auth, email, password)
@@ -29,6 +30,8 @@ function AuthForm({ isLogin, setAuthenticated }) {
         if (user != null) {
           setAuthenticated(true);
           navigate("/home");
+          // localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("user", JSON.stringify(user));
         }
       })
       .catch((error) => {
@@ -48,6 +51,7 @@ function AuthForm({ isLogin, setAuthenticated }) {
         const user = userCredential.user;
         if (user != null) {
           setAuthenticated(true);
+          localStorage.setItem("user", JSON.stringify(user));
           navigate("/home");
         }
         // ...
@@ -69,6 +73,7 @@ function AuthForm({ isLogin, setAuthenticated }) {
         const user = result.user;
         if (user != null) {
           setAuthenticated(true);
+          localStorage.setItem("user", JSON.stringify(user));
           navigate("/home");
         }
         // IdP data available using getAdditionalUserInfo(result)
@@ -99,7 +104,9 @@ function AuthForm({ isLogin, setAuthenticated }) {
         // The signed-in user info.
         const user = result.user;
         if (user != null) {
+          console.log("User signed in successfully");
           setAuthenticated(true);
+          localStorage.setItem("user", JSON.stringify(user));
           navigate("/home");
         }
         // IdP data available using getAdditionalUserInfo(result)
@@ -107,6 +114,7 @@ function AuthForm({ isLogin, setAuthenticated }) {
       })
       .catch((error) => {
         // Handle Errors here.
+        console.error("Error in githubAuth: ", error);
         const errorCode = error.code;
         const errorMessage = error.message;
         // The email of the user's account used.
@@ -131,7 +139,7 @@ function AuthForm({ isLogin, setAuthenticated }) {
         name: isLogin ? "email" : "fullName",
         error: isLogin ? "Invalid email" : "Invalid full name",
         onChange: (e) => {
-          setEmail(e.target.value);
+          isLogin ? setEmail(e.target.value) : setFullName(e.target.value);
           // if (isLogin) {
           //   // do something
           // } else {
@@ -147,7 +155,7 @@ function AuthForm({ isLogin, setAuthenticated }) {
         name: isLogin ? "password" : "email",
         error: isLogin ? "Invalid password" : "Invalid email",
         onChange: (e) => {
-          setPassword(e.target.value);
+          isLogin ? setPassword(e.target.value) : setEmail(e.target.value);
           // if (isLogin) {
           //   // do something
           // } else {
@@ -163,7 +171,9 @@ function AuthForm({ isLogin, setAuthenticated }) {
         placeholder: "Enter your password",
         name: "password",
         error: "Invalid password",
-        onChange: () => {},
+        onChange: (e) => {
+          !isLogin && setPassword(e.target.value);
+        },
       },
       {
         render: !isLogin, // if isLogin is false, render this field
@@ -193,7 +203,7 @@ function AuthForm({ isLogin, setAuthenticated }) {
       onClick: () => {},
     },
     authWith: {
-      label: isLogin ? "Login with" : "Sign Up with",
+      label: "Continue with",
       onClick: () => {},
     },
     footer: {

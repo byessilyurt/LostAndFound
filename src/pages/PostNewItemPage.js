@@ -1,9 +1,9 @@
 import { React, useReducer, useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import MapsLocationPicker from "../components/MapsLocationPicker";
 import FileUploader from "./FileUploader";
 import { getStorage } from "firebase/storage";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { addItemToFirestore } from "../firebase/utils";
 
 const formReducer = (state, event) => {
@@ -28,10 +28,11 @@ function PostNewItemPage() {
   const [formData, setFormData] = useReducer(formReducer, {});
   const [fileData, setFileData] = useState([]);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
   const [mapLocation, setMapLocation] = useState({
     lat: "51.107883",
     lng: "17.038538",
-  }); //this needs to be worked on
+  });
   const autocompleteRef = useRef(null);
 
   const storage = getStorage();
@@ -75,16 +76,24 @@ function PostNewItemPage() {
     }
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
+    toast.info("Submitting form...", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 1000,
+    });
+
+    await new Promise((r) => setTimeout(r, 1000));
+
     let newFileData = fileData.map((image) => image.url);
     const combinedData = {
       ...formData,
-      images: [...newFileData], // Create URLs for the images
+      images: [...newFileData],
     };
 
-    toast.success("Form submitted successfully!", {
+    toast.success("Form submitted successfully, redirecting home!", {
       position: toast.POSITION.TOP_CENTER,
+      autoClose: 3000,
     });
     console.log(combinedData);
     setFormData({
@@ -94,6 +103,9 @@ function PostNewItemPage() {
     setMessage("");
     setTimeout(() => setFormData({ reset: false }), 100);
     addItemToFirestore(combinedData);
+    setTimeout(() => {
+      navigate("/home");
+    }, 3000);
   };
 
   useEffect(() => {
@@ -123,7 +135,6 @@ function PostNewItemPage() {
         <h2 className="text-2xl font-bold py-2 px-4 mb-3 text-gray-700">
           Post a New Item
         </h2>
-        <ToastContainer />
         <hr className="border-gray-400 my-2 " />
         <form onSubmit={handleFormSubmit}>
           <div className="md:grid md:grid-cols-2 md:gap-4">
