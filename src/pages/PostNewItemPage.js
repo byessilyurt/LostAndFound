@@ -85,11 +85,14 @@ function PostNewItemPage() {
 
     await new Promise((r) => setTimeout(r, 1000));
     const currentTime = new Date();
+    let user = JSON.parse(localStorage.getItem("user"));
+    let uid = user && user.uid;
     let newFileData = fileData.map((image) => image.url);
     const combinedData = {
       ...formData,
       images: [...newFileData],
       datePosted: currentTime,
+      uid: uid,
     };
 
     toast.success("Form submitted successfully, redirecting home!", {

@@ -17,4 +17,13 @@ const getItemFromFirestore = async () => {
   return itemList;
 };
 
-export { addItemToFirestore, getItemFromFirestore };
+const addUserToFirestore = async (user) => {
+  try {
+    const docRef = await addDoc(collection(db, "users"), user);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
+
+export { addItemToFirestore, getItemFromFirestore, addUserToFirestore };

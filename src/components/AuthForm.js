@@ -12,6 +12,7 @@ import {
 import { initializeApp } from "firebase/app";
 import { auth } from "../firebase";
 import { useState } from "react";
+import { addUserToFirestore } from "../firebase/utils";
 
 function AuthForm({ isLogin, setAuthenticated }) {
   const navigate = useNavigate();
@@ -32,6 +33,12 @@ function AuthForm({ isLogin, setAuthenticated }) {
           navigate("/home");
           // localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("user", JSON.stringify(user));
+          addUserToFirestore({
+            uid: user.uid,
+            email: user.email,
+            fullName: fullName,
+            photoURL: user.photoURL ? user.photoURL : "",
+          });
         }
       })
       .catch((error) => {
@@ -75,6 +82,12 @@ function AuthForm({ isLogin, setAuthenticated }) {
           setAuthenticated(true);
           localStorage.setItem("user", JSON.stringify(user));
           navigate("/home");
+          addUserToFirestore({
+            uid: user.uid,
+            email: user.email,
+            fullName: fullName,
+            photoURL: user.photoURL ? user.photoURL : "",
+          });
         }
         // IdP data available using getAdditionalUserInfo(result)
         // ...
@@ -108,6 +121,12 @@ function AuthForm({ isLogin, setAuthenticated }) {
           setAuthenticated(true);
           localStorage.setItem("user", JSON.stringify(user));
           navigate("/home");
+          addUserToFirestore({
+            uid: user.uid,
+            email: user.email,
+            fullName: fullName,
+            photoURL: user.photoURL ? user.photoURL : "",
+          });
         }
         // IdP data available using getAdditionalUserInfo(result)
         // ...
