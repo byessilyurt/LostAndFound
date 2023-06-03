@@ -1,12 +1,24 @@
 import React, { useEffect } from "react";
 import { IoMdTime } from "react-icons/io";
 import { RiErrorWarningLine } from "react-icons/ri";
+import moment from "moment";
 
 import DropdownMenu from "./DropdownMenu";
 
 const ItemCard = ({ item, onItemCardClick }) => {
   const isLost = item.status === "lost";
   const statusColor = isLost ? "lostColor" : "foundColor";
+
+  // calculate time ago
+  useEffect(() => {
+    if (item.datePosted === undefined) return;
+    item.datePosted = item.datePosted.toDate;
+    console.log(item.datePosted);
+    const timeAgo = moment(item.datePosted).fromNow();
+    console.log(timeAgo);
+    item.timeAgo = timeAgo;
+    console.log(item.timeAgo);
+  }, [item]);
 
   return (
     <div
