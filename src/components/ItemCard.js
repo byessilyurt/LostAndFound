@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IoMdTime } from "react-icons/io";
 import { RiErrorWarningLine } from "react-icons/ri";
 
@@ -17,7 +17,7 @@ const ItemCard = ({ item, onItemCardClick }) => {
         {" "}
         {/* 56.25% for a 16:9 aspect ratio */}
         <img
-          src={item.image}
+          src={item.images ? item.images[0] : item.image}
           alt={item.title}
           className="absolute inset-0 w-full h-full rounded-t-lg object-cover" // Full coverage of the parent
         />

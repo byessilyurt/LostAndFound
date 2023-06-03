@@ -2,13 +2,15 @@ import { React, useReducer, useState, useRef, useEffect } from "react";
 import MapsLocationPicker from "../components/MapsLocationPicker";
 import FileUploader from "./FileUploader";
 import { getStorage } from "firebase/storage";
-// reset={formData.reset}
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { addItemToFirestore } from "../firebase/utils";
 
 const formReducer = (state, event) => {
   if (event.reset) {
     return {
-      itemType: "",
-      lostItem: "",
+      status: "",
+      title: "",
       dateLost: "",
       location: "",
       description: "",
@@ -61,32 +63,37 @@ function PostNewItemPage() {
       setFormData({ reset: false });
       setMessage(""); // Reset message
     } else {
-      setFileData((prevState) => [...prevState, uploadData]);
-      if (uploadData.url === null) {
-        setMessage("File removed from database.");
-      } else {
+      if (uploadData.url !== null) {
+        setFileData((prevState) => [...prevState, uploadData]);
         setMessage("File uploaded to database.");
+      } else {
+        setFileData((prevState) =>
+          prevState.filter((file) => file.file !== uploadData.file)
+        );
+        setMessage("File removed from database.");
       }
     }
   };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
-    console.log(fileData);
+    let newFileData = fileData.map((image) => image.url);
     const combinedData = {
       ...formData,
-      images: fileData.map((data) => data.url),
+      images: [...newFileData], // Create URLs for the images
     };
 
-    alert("You have submitted the form");
+    toast.success("Form submitted successfully!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
     console.log(combinedData);
     setFormData({
       reset: true,
     });
-    setFileData([]); // Reset selected files
+    setFileData([]);
     setMessage("");
     setTimeout(() => setFormData({ reset: false }), 100);
+    addItemToFirestore(combinedData);
   };
 
   useEffect(() => {
@@ -116,6 +123,7 @@ function PostNewItemPage() {
         <h2 className="text-2xl font-bold py-2 px-4 mb-3 text-gray-700">
           Post a New Item
         </h2>
+        <ToastContainer />
         <hr className="border-gray-400 my-2 " />
         <form onSubmit={handleFormSubmit}>
           <div className="md:grid md:grid-cols-2 md:gap-4">
@@ -123,16 +131,16 @@ function PostNewItemPage() {
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="itemType"
+                  htmlFor="status"
                 >
-                  Item Type:
+                  Status:
                 </label>
                 <div className="mt-2">
                   <div className="relative inline-block w-full text-gray-700">
                     <select
-                      id="itemType"
-                      name="itemType"
-                      value={formData.itemType}
+                      id="status"
+                      name="status"
+                      value={formData.status}
                       onChange={handleInputChange}
                       className="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline"
                     >
@@ -156,16 +164,16 @@ function PostNewItemPage() {
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="lostItem"
+                  htmlFor="title"
                 >
                   Item Name:
                 </label>
                 <input
                   type="text"
-                  id="lostItem"
-                  name="lostItem"
+                  id="title"
+                  name="title"
                   placeholder="Enter item name"
-                  value={formData.lostItem || ""}
+                  value={formData.title || ""}
                   onChange={handleInputChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
@@ -207,7 +215,7 @@ function PostNewItemPage() {
               <MapsLocationPicker
                 mapLocation={mapLocation}
                 setMapLocation={setMapLocation}
-                found={formData.itemType === "found"}
+                found={formData.status === "found"}
               />
               <div className="mb-4">
                 <label
@@ -263,8 +271,8 @@ function PostNewItemPage() {
                   </label>
                   <div className="mt-2">
                     <FileUploader
-                      onUpload={handleFileUpload}
                       reset={formData.reset}
+                      onUpload={handleFileUpload}
                     />
                   </div>
                 </div>
