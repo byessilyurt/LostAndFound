@@ -184,10 +184,7 @@ function AuthForm({ isLogin, setAuthenticated }) {
     button: {
       label: isLogin ? "Login" : "Sign Up",
       onClick: () => {
-        // if(isLogin)
-        signup();
-        // else
-        login();
+        isLogin ? login() : signup();
       },
     },
     forgotPassword: {
