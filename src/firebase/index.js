@@ -1,8 +1,17 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
+
 import { getAuth } from "firebase/auth";
+import { getFirestore, getDocs } from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
+
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -17,5 +26,18 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage();
+const storageRef = ref(storage, "images");
 
-export { db,auth };
+export {
+  app,
+  auth,
+  db,
+  storageRef,
+  analytics,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+  ref,
+  getDocs,
+};

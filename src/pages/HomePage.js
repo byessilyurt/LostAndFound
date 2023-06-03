@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ItemCard from "../components/ItemCard";
 import ItemDetailCard from "../components/ItemDetailCard";
-import { items } from "../data/index.js";
+import { items as dummyData } from "../data";
 import { FaSearch } from "react-icons/fa";
+import { getItemFromFirestore } from "../firebase/utils";
 
 function HomePage() {
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [numItemsToShow, setNumItemsToShow] = useState(6); // Add this line
+  const [numItemsToShow, setNumItemsToShow] = useState(6);
+  const [items, setItems] = useState(
+    JSON.parse(localStorage.getItem("items")) || [...dummyData]
+  );
+
+  useEffect(() => {
+    getItemFromFirestore().then((itemList) => {
+      setItems([...itemList]);
+      localStorage.setItem("items", JSON.stringify([...itemList]));
+    });
+  }, []);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
@@ -20,7 +31,7 @@ function HomePage() {
   };
 
   const filteredData = items.filter((item) =>
-    item.title.toLowerCase().includes(search.toLowerCase())
+    item.title?.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleSearch = (e) => {
@@ -28,7 +39,6 @@ function HomePage() {
   };
 
   const loadMoreItems = () => {
-    // Add this function
     setNumItemsToShow(numItemsToShow + 6);
   };
 
