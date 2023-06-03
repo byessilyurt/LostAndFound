@@ -14,7 +14,7 @@ import AuthPage from "./pages/AuthPage";
 
 function App() {
   const location = useLocation();
-  const [authenticated, setAuthenticated] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
   const shouldShowHeaderFooter = !(
     location.pathname === "/login" || location.pathname === "/signup"
   );
