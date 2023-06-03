@@ -12,6 +12,7 @@ import MyAccount from "./pages/MyAccountPage";
 import PostNewItem from "./pages/PostNewItemPage";
 import ResetPassword from "./pages/ResetPasswordPage";
 import AuthPage from "./pages/AuthPage";
+import ConversationPage from "./pages/ConversationPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -54,6 +55,7 @@ function App() {
           path="/my-account"
           element={authenticated ? <MyAccount /> : <Navigate to="/signup" />}
         />
+        <Route path="/conversation/:itemOwnerId" element={<ConversationPage />} />
       </Routes>
       {shouldShowHeaderFooter && <Footer />}
     </div>
