@@ -53,7 +53,7 @@ const ItemCard = ({ item, onItemCardClick }) => {
           <div className="line-clamp-3 text-gray-600">{item.description}</div>
         </div>
         <div className="flex flex-wrap mt-2">
-          {item.tags.slice(0, 3).map((tag, index) => (
+          {item.tags?.slice(0, 3).map((tag, index) => (
             <div
               key={index}
               className="inline-flex justify-center items-center gap-1 bg-gray-100 text-sm font-semibold text-gray-700 rounded-full px-4 py-1 max-w-full truncate mr-2 mt-2"
