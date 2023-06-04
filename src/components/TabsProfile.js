@@ -10,6 +10,9 @@ const Tabs = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const items = JSON.parse(localStorage.getItem("items"));
+  const myItems = items.filter(
+    (item) => item.user?.uid === JSON.parse(localStorage.getItem("user")).uid
+  );
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setIsModalOpen(true);
@@ -26,7 +29,7 @@ const Tabs = () => {
           <>
             <h1 className="text-left font-bold text-4xl mb-4">Posts</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center mx-auto">
-              {items.map((item) => (
+              {myItems.map((item) => (
                 <ItemCard
                   key={item.id}
                   item={item}

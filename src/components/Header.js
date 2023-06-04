@@ -3,16 +3,21 @@ import logo from "../images/logo.svg";
 import { defaultImage } from "../firebase/utils";
 
 function Header() {
-  const { photoURL } = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
+  const { photoURL } = user || {};
   const profileImage = photoURL || defaultImage;
 
   return (
-    <nav className="bg-white h-[80px] w-full flex items-center justify-between md:px-[165px] px-[50px]">
+    <nav className="bg-white h-[80px] w-full flex items-center justify-between md:px-[165px] sm:px-[50px] px-[30px]">
       <Link to="/home">
         {" "}
-        <img src={logo} alt="Logo" />{" "}
+        <img
+          src={logo}
+          alt="Logo"
+          className="h-12 w-12 sm:h-20 sm:w-20 "
+        />{" "}
       </Link>
-      <ul className="flex md:gap-9 sm:gap-5 gap-4 items-center text-base font-semibold">
+      <ul className="flex md:gap-9 sm:gap-5 gap-4 items-center sm:text-base text-xs font-semibold mx-0">
         <li>
           <Link to="/home">Home</Link>
         </li>
@@ -30,7 +35,7 @@ function Header() {
             <img
               src={profileImage}
               alt="User Profile"
-              className="w-[48px] h-[48px] rounded-[12px]"
+              className="w-10 h-10 sm:w-[48px] sm:h-[48px] rounded-[12px]"
             />
           </Link>
         </li>

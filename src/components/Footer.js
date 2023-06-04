@@ -3,10 +3,10 @@ import logo from "../images/logo-white.svg";
 
 function Footer() {
   return (
-    <footer className="bg-foundColor h-[160px] w-full flex justify-between md:pl-[165px] md:pr-[214px] px-[56px] py-4">
+    <footer className="bg-foundColor h-[180px] sm:h-[160px] w-full flex justify-between md:pl-[165px] md:pr-[214px] px-[40px] py-4">
       <img src={logo} alt="Logo" className="self-center" />
 
-      <div className="flex gap-8 text-white self-center">
+      <div className="flex gap-8 text-white self-center sm:text-base text-xs ml-4">
         <div>
           <h4 className="font-bold mb-2">Quick Links</h4>
           <ul className="space-y-1">

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdTime } from "react-icons/io";
 import { HiOutlineHashtag } from "react-icons/hi";
 import moment from "moment";
@@ -7,18 +7,19 @@ import DropdownMenu from "./DropdownMenu";
 const ItemCard = ({ item, onItemCardClick }) => {
   const isLost = item.status === "lost";
   const statusColor = isLost ? "lostColor" : "foundColor";
+  const [timeAgo, setTimeAgo] = useState("");
 
-  // calculate time ago
   useEffect(() => {
-    if (item.datePosted === undefined) return;
-    item.datePosted = item.datePosted.toDate;
-    const timeAgo = moment(item.datePosted).fromNow();
-    item.timeAgo = timeAgo;
-  }, [item]);
+    if (item.datePosted) {
+      const milliseconds = Math.floor(item.datePosted.nanoseconds / 1000000);
+      const date = new Date(item.datePosted.seconds * 1000 + milliseconds); // convert to JavaScript Date object
+      setTimeAgo(moment(date).fromNow()); // convert to relative time string
+    }
+  }, [item.datePosted]);
 
   return (
     <div
-      className="relative flex flex-col w-[350px] h-88 bg-white rounded-lg shadow my-3 "
+      className="relative flex flex-col w-[325px] sm:w-[350px] h-88 bg-white rounded-lg shadow my-3 "
       onClick={() => {}}
     >
       <div
@@ -43,7 +44,7 @@ const ItemCard = ({ item, onItemCardClick }) => {
             </h3>
             <div className="flex items-center space-x-2">
               <div className="flex items-center opacity-50 text-sm">
-                <span>{item.timeAgo}</span>
+                <span>{timeAgo}</span>
               </div>
               <DropdownMenu />
             </div>

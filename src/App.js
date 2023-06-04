@@ -20,7 +20,9 @@ function App() {
   const user = JSON.parse(localStorage.getItem("user"));
   const [authenticated, setAuthenticated] = useState(user ? true : false);
   const shouldShowHeaderFooter = !(
-    location.pathname === "/login" || location.pathname === "/signup"
+    location.pathname === "/login" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/"
   );
 
   return (
@@ -30,8 +32,8 @@ function App() {
       <Routes>
         <Route
           path="/"
-          Component={Home}
-          element={authenticated ? <div /> : <div />}
+          Component={AuthPage}
+          element={authenticated ? <Home /> : <Navigate to="/signup" />}
         />
         <Route
           path="/login"

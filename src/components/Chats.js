@@ -1,5 +1,4 @@
 import React from "react";
-import ConversationPage from "../pages/ConversationPage";
 
 function Chats() {
   // list the users I have chatted with and when I click on them, I can see the chat history with ConversationPage Component.
