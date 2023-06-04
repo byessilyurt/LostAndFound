@@ -1,11 +1,11 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-function ItemDetailCard({ item, onClose, currentUser, itemOwner }) {
-  const Navigate = useNavigate();
+function ItemDetailCard({ item, onClose }) {
+  const navigate = useNavigate();
 
   const handleChatButton = () => {
-    Navigate(`/conversation/neLK1eOAJQVkxbWchqtqq8sSWM32`);
+    navigate(`/conversation/${item.user?.uid}`);
   };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -13,7 +13,7 @@ function ItemDetailCard({ item, onClose, currentUser, itemOwner }) {
         <img
           className="w-3/4 object-cover object-center"
           src={item.image}
-          alt={item.title} 
+          alt={item.title}
         />
         <div className="w-1/2 p-8">
           <h2 className="text-2xl font-bold mb-2">{item.title}</h2>
@@ -39,11 +39,11 @@ function ItemDetailCard({ item, onClose, currentUser, itemOwner }) {
             <p className="text-gray-700">{item.message}</p>
           </div>
           <button
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      onClick={handleChatButton}
-    >
-      Chat
-    </button>
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleChatButton}
+          >
+            Chat
+          </button>
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={onClose}

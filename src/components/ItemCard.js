@@ -13,11 +13,8 @@ const ItemCard = ({ item, onItemCardClick }) => {
   useEffect(() => {
     if (item.datePosted === undefined) return;
     item.datePosted = item.datePosted.toDate;
-    console.log(item.datePosted);
     const timeAgo = moment(item.datePosted).fromNow();
-    console.log(timeAgo);
     item.timeAgo = timeAgo;
-    console.log(item.timeAgo);
   }, [item]);
 
   return (

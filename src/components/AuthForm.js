@@ -2,43 +2,38 @@ import { AiFillGithub, AiFillGoogleCircle } from "react-icons/ai";
 import logo from "../images/logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
   GithubAuthProvider,
 } from "firebase/auth";
-import { initializeApp } from "firebase/app";
 import { auth } from "../firebase";
 import { useState } from "react";
 import { addUserToFirestore } from "../firebase/utils";
 
 function AuthForm({ isLogin, setAuthenticated }) {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [displayName, setDisplayName] = useState("");
 
   const signup = async () => {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log("logged in successfully");
-
-        // Signed in
         const user = userCredential.user;
         if (user != null) {
+          user.displayName = displayName;
           setAuthenticated(true);
           navigate("/home");
-          // localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("user", JSON.stringify(user));
           addUserToFirestore({
             uid: user.uid,
             email: user.email,
-            fullName: fullName,
+            displayName: displayName,
             photoURL: user.photoURL ? user.photoURL : "",
           });
+          console.log(user);
         }
       })
       .catch((error) => {
@@ -46,22 +41,18 @@ function AuthForm({ isLogin, setAuthenticated }) {
         const errorMessage = error.message;
         console.log(errorCode);
         console.log(errorMessage);
-
-        // ..
       });
   };
 
   const login = async () => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
         if (user != null) {
           setAuthenticated(true);
           localStorage.setItem("user", JSON.stringify(user));
           navigate("/home");
         }
-        // ...
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -73,79 +64,59 @@ function AuthForm({ isLogin, setAuthenticated }) {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
-        // The signed-in user info.
         const user = result.user;
         if (user != null) {
           setAuthenticated(true);
           localStorage.setItem("user", JSON.stringify(user));
           navigate("/home");
           addUserToFirestore({
-            uid: user.uid,
+            uid: user.id,
             email: user.email,
-            fullName: fullName,
+            displayName: user.displayName ? user.displayName : "",
             photoURL: user.photoURL ? user.photoURL : "",
           });
         }
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
         const email = error.customData.email;
-        // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
       });
-
-    console.log(provider);
   };
 
   const githubAuth = () => {
     const provider = new GithubAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        // This gives you a GitHub Access Token. You can use it to access the GitHub API.
         const credential = GithubAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
-
-        // The signed-in user info.
         const user = result.user;
         if (user != null) {
-          console.log("User signed in successfully");
+          user.displayName = displayName;
           setAuthenticated(true);
           localStorage.setItem("user", JSON.stringify(user));
           navigate("/home");
           addUserToFirestore({
             uid: user.uid,
             email: user.email,
-            fullName: fullName,
+            displayName: displayName,
             photoURL: user.photoURL ? user.photoURL : "",
           });
         }
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
       })
       .catch((error) => {
-        // Handle Errors here.
         console.error("Error in githubAuth: ", error);
         const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
         const email = error.customData.email;
-        // The AuthCredential type that was used.
         const credential = GithubAuthProvider.credentialFromError(error);
-        // ...
       });
   };
 
   const fields = {
-    // put login fields if isLogin is true
     title: isLogin ? "Login" : "Sign Up",
     subTitle: isLogin
       ? "Login to your account to continue with Lost&Found."
@@ -155,16 +126,10 @@ function AuthForm({ isLogin, setAuthenticated }) {
         label: isLogin ? "Email" : "Full Name",
         type: isLogin ? "email" : "text",
         placeholder: isLogin ? "name@example.com" : "Enter your full name",
-        name: isLogin ? "email" : "fullName",
+        name: isLogin ? "email" : "displayName",
         error: isLogin ? "Invalid email" : "Invalid full name",
         onChange: (e) => {
-          isLogin ? setEmail(e.target.value) : setFullName(e.target.value);
-          // if (isLogin) {
-          //   // do something
-          // } else {
-          // setEmail(e.target.value);
-          // // do something
-          // }
+          isLogin ? setEmail(e.target.value) : setDisplayName(e.target.value);
         },
       },
       {

@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import logo from "../images/logo.svg";
-import profileImage from "../images/profile.jpg";
+import { defaultImage } from "../firebase/utils";
 
 function Header() {
+  const { photoURL } = JSON.parse(localStorage.getItem("user"));
+  const profileImage = photoURL || defaultImage;
+
   return (
     <nav className="bg-white h-[80px] w-full flex items-center justify-between md:px-[165px] px-[50px]">
       <Link to="/home">
