@@ -23,7 +23,6 @@ function AuthForm({ isLogin, setAuthenticated }) {
 
   useEffect(() => {
     if (isLogin) {
-      console.log("fired");
       const rememberedEmail = localStorage.getItem("rememberMe");
       if (rememberedEmail) {
         setEmail(rememberedEmail);
@@ -55,7 +54,6 @@ function AuthForm({ isLogin, setAuthenticated }) {
             displayName: displayName,
             photoURL: user.photoURL ? user.photoURL : "",
           });
-          console.log(user);
         }
       })
       .catch((error) => {

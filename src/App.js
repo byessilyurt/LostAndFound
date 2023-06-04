@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { firebaseApp, analytics } from "./firebase";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 import Home from "./pages/HomePage";
-import LandingPage from "./pages/LandingPage";
 import MyAccount from "./pages/MyAccountPage";
 import PostNewItem from "./pages/PostNewItemPage";
 import ResetPassword from "./pages/ResetPasswordPage";
@@ -15,6 +13,7 @@ import AuthPage from "./pages/AuthPage";
 import ConversationPage from "./pages/ConversationPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Chats from "./components/Chats";
 
 function App() {
   const location = useLocation();
@@ -52,10 +51,17 @@ function App() {
           element={authenticated ? <PostNewItem /> : <Navigate to="/signup" />}
         />
         <Route
+          path="/chats"
+          element={authenticated ? <Chats /> : <Navigate to="/signup" />}
+        />
+        <Route
           path="/my-account"
           element={authenticated ? <MyAccount /> : <Navigate to="/signup" />}
         />
-        <Route path="/conversation/:itemOwnerId" element={<ConversationPage />} />
+        <Route
+          path="/conversation/:itemOwnerId"
+          element={<ConversationPage />}
+        />
       </Routes>
       {shouldShowHeaderFooter && <Footer />}
     </div>

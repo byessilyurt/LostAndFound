@@ -31,7 +31,6 @@ const DropdownMenu = () => {
         <div className="absolute right-0 mt-2 w-48 py-1 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <button
             onClick={() => {
-              console.log("Edit clicked");
               setIsOpen(false);
             }}
             className="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
@@ -41,7 +40,6 @@ const DropdownMenu = () => {
           </button>
           <button
             onClick={() => {
-              console.log("Delete clicked");
               setIsOpen(false);
             }}
             className="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"

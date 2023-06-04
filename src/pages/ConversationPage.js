@@ -8,7 +8,7 @@ import Talk from "talkjs";
 function ConversationPage() {
   const chatContainerRef = useRef(null);
   const { itemOwnerId } = useParams();
-  const defaultUserImage = "https://source.unsplash.com/random";
+  const { defaultImage } = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
     async function createChat() {
       // get current user from local storage
@@ -25,7 +25,7 @@ function ConversationPage() {
         id: currentUser.uid,
         name: currentUser.displayName || "Anonymous", // TODO: change to accept names from github and sign up form.
         email: currentUser.email,
-        photoUrl: currentUser.photoURL || defaultUserImage,
+        photoUrl: currentUser.photoURL || defaultImage,
         welcomeMessage: "Hello!",
         role: "default",
       });
@@ -34,7 +34,7 @@ function ConversationPage() {
         id: otherUserDoc.uid,
         name: otherUserDoc.name || "Anonymous", // TODO: change to accept names from google, github and sign up form.
         email: otherUserDoc.email || "Anonymous",
-        photoUrl: otherUserDoc.photoURL || defaultUserImage,
+        photoUrl: otherUserDoc.photoURL || defaultImage,
         welcomeMessage: "Hello!",
         role: "default",
       });
