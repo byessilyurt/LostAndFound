@@ -9,16 +9,38 @@ import {
   GithubAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { addUserToFirestore } from "../firebase/utils";
+import { toast } from "react-toastify";
 
 function AuthForm({ isLogin, setAuthenticated }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassowrd] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+
+  useEffect(() => {
+    if (isLogin) {
+      console.log("fired");
+      const rememberedEmail = localStorage.getItem("rememberMe");
+      if (rememberedEmail) {
+        setEmail(rememberedEmail);
+        setRememberMe(true);
+      }
+    }
+  }, []);
 
   const signup = async () => {
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+      });
+      return;
+    }
+
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -45,6 +67,11 @@ function AuthForm({ isLogin, setAuthenticated }) {
   };
 
   const login = async () => {
+    if (rememberMe) {
+      localStorage.setItem("rememberMe", email);
+    } else {
+      localStorage.removeItem("rememberMe");
+    }
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -125,6 +152,7 @@ function AuthForm({ isLogin, setAuthenticated }) {
       {
         label: isLogin ? "Email" : "Full Name",
         type: isLogin ? "email" : "text",
+        value: isLogin ? email : displayName,
         placeholder: isLogin ? "name@example.com" : "Enter your full name",
         name: isLogin ? "email" : "displayName",
         error: isLogin ? "Invalid email" : "Invalid full name",
@@ -166,14 +194,18 @@ function AuthForm({ isLogin, setAuthenticated }) {
         placeholder: "Confirm your password",
         name: "confirmPassword",
         error: "Invalid password",
-        onChange: () => {},
+        onChange: (e) => {
+          !isLogin && setConfirmPassowrd(e.target.value);
+        },
       },
     ],
     checkBox: {
       render: isLogin,
       label: "Remember me",
       name: "rememberMe",
-      onChange: () => {},
+      onChange: () => {
+        setRememberMe(!rememberMe);
+      },
     },
     button: {
       label: isLogin ? "Login" : "Sign Up",
@@ -216,6 +248,7 @@ function AuthForm({ isLogin, setAuthenticated }) {
                 placeholder={field.placeholder}
                 name={field.name}
                 onChange={field.onChange}
+                value={field.value}
                 className="w-[350px] h-[44px] px-3 py-3 border border-lightGray rounded-[8px] text-sm placeholder-lightGray"
               />
             </div>

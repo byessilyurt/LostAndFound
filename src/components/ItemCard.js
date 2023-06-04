@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { IoMdTime } from "react-icons/io";
-import { RiErrorWarningLine } from "react-icons/ri";
+import { HiOutlineHashtag } from "react-icons/hi";
 import moment from "moment";
-
 import DropdownMenu from "./DropdownMenu";
 
 const ItemCard = ({ item, onItemCardClick }) => {
@@ -19,38 +18,51 @@ const ItemCard = ({ item, onItemCardClick }) => {
 
   return (
     <div
-      className="relative w-[350px] h-88 bg-white rounded-lg shadow my-3 "
-      onClick={() => onItemCardClick(item)}
+      className="relative flex flex-col w-[350px] h-88 bg-white rounded-lg shadow my-3 "
+      onClick={() => {}}
     >
-      <div className="relative w-full pb-[56.25%]">
-        {" "}
-        {/* 56.25% for a 16:9 aspect ratio */}
+      <div
+        className="relative w-full pb-[56.25%] cursor-pointer"
+        onClick={() => onItemCardClick(item)}
+      >
         <img
           src={item.images ? item.images[0] : item.image}
           alt={item.title}
-          className="absolute inset-0 w-full h-full rounded-t-lg object-cover" // Full coverage of the parent
+          className="absolute inset-0 w-full h-full rounded-t-lg object-cover"
         />
       </div>
 
-      <div className="p-4">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="text-lg font-bold">{item.title}</h3>
-          <DropdownMenu />
-        </div>
-        <div className="flex items-center text-sm font-semibold text-gray-500">
-          <IoMdTime className="mr-1 w-2.5 h-2.5" />
-          <span>{item.timeAgo}</span>
-          <span className={`mx-2 w-1 h-1 rounded-full bg-${statusColor}`} />
-          <span>{item.location}</span>
-        </div>
-      </div>
-      <div
-        className={`inline-flex justify-center items-center gap-1 bg-gray-100 text-sm font-semibold text-gray-700 rounded-full px-4 py-1 max-w-full truncate my-4 mx-4`}
-      >
-        <RiErrorWarningLine className={`mr-1 text-${statusColor} w-3 h-3`} />
-        <span className="truncate">{item.message}</span>
-      </div>
+      <div className="p-4 flex-1 flex flex-col justify-between">
+        <div>
+          <div className="flex justify-between items-center mb-2">
+            <h3
+              className="text-lg font-bold cursor-pointer"
+              onClick={() => onItemCardClick(item)}
+            >
+              {item.title}
+            </h3>
+            <div className="flex items-center space-x-2">
+              <div className="flex items-center opacity-50 text-sm">
+                <span>{item.timeAgo}</span>
+              </div>
+              <DropdownMenu />
+            </div>
+          </div>
 
+          <div className="line-clamp-3 text-gray-600">{item.description}</div>
+        </div>
+        <div className="flex flex-wrap mt-2">
+          {item.tags.slice(0, 3).map((tag, index) => (
+            <div
+              key={index}
+              className="inline-flex justify-center items-center gap-1 bg-gray-100 text-sm font-semibold text-gray-700 rounded-full px-4 py-1 max-w-full truncate mr-2 mt-2"
+            >
+              <HiOutlineHashtag className="w-4 h-4" />
+              {tag}
+            </div>
+          ))}
+        </div>
+      </div>
       <div
         className={`uppercase font-bold px-4 py-1 rounded-bl-lg rounded-tr-lg bg-${statusColor} absolute top-0 right-0 ${
           isLost ? "text-black" : "text-white"

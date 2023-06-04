@@ -4,13 +4,12 @@ import AccountDetails from "./AccountDetails";
 import AccountSettings from "./AccountSettings";
 import ItemCard from "./ItemCard";
 import ItemDetailCard from "./ItemDetailCard";
-import { items } from "../data";
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const items = JSON.parse(localStorage.getItem("items"));
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setIsModalOpen(true);

@@ -18,7 +18,6 @@ function ConversationPage() {
       const userDocRef = doc(db, "users", itemOwnerId); // Reference to a document with ID of user's uid
       const userDocSnap = await getDoc(userDocRef);
       const otherUserDoc = userDocSnap.data();
-      console.log(otherUserDoc);
       // const otherUserDocRef = doc(db, "users", itemOwnerId);
       // const otherUserDocSnap = await getDoc(otherUserDocRef);
 
@@ -30,7 +29,6 @@ function ConversationPage() {
         welcomeMessage: "Hello!",
         role: "default",
       });
-      console.log(me);
 
       const other = new Talk.User({
         id: otherUserDoc.uid,
@@ -40,8 +38,6 @@ function ConversationPage() {
         welcomeMessage: "Hello!",
         role: "default",
       });
-      console.log("other: ", other);
-
       if (!window.talkSession) {
         window.talkSession = new Talk.Session({
           appId: "tP6Jndfs",

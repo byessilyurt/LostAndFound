@@ -98,7 +98,6 @@ function PostNewItemPage() {
       position: toast.POSITION.TOP_CENTER,
       autoClose: 3000,
     });
-    console.log(combinedData);
     setFormData({
       reset: true,
     });
@@ -109,7 +108,6 @@ function PostNewItemPage() {
     setTimeout(() => {
       navigate("/home");
     }, 3000);
-    console.log(combinedData);
   };
 
   useEffect(() => {
