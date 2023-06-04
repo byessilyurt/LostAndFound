@@ -9,7 +9,7 @@ function ItemDetailCard({ item, onClose }) {
   const statusColor = isLost ? "lostColor" : "foundColor";
 
   const handleChatButton = () => {
-    navigate(`/conversation/${item.user?.uid}`);
+    navigate(`/chats/${item.user?.uid}`);
   };
 
   return (
