@@ -22,9 +22,7 @@ function HomePage() {
     "accessory",
   ]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [items, setItems] = useState(
-    JSON.parse(localStorage.getItem("items")) || [...dummyData]
-  );
+  const [items, setItems] = useState(JSON.parse(localStorage.getItem("items")));
 
   useEffect(() => {
     getItemFromFirestore().then((itemList) => {
@@ -82,7 +80,7 @@ function HomePage() {
             key={index}
             onClick={() => handleTagClick(tag)}
             className={`inline-flex justify-center items-center gap-1 bg-gray-100 text-sm font-semibold text-gray-700 rounded-full px-4 py-1 max-w-full truncate mr-2 mt-2 ${
-              selectedTags.includes(tag) ? "bg-blue-200" : ""
+              selectedTags.includes(tag) ? "bg-blue-400 " : ""
             }`}
           >
             <HiOutlineHashtag className="w-4 h-4" />

@@ -1,10 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
+import { deleteItemFromFirestore } from "../firebase/utils";
 
-const DropdownMenu = () => {
+const DropdownMenu = ({ id }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef();
+
+  const handleDelete = async (event) => {
+    await deleteItemFromFirestore(id);
+    setIsOpen(false);
+    window.location.reload();
+  };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -40,7 +47,7 @@ const DropdownMenu = () => {
           </button>
           <button
             onClick={() => {
-              setIsOpen(false);
+              handleDelete(id);
             }}
             className="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
           >

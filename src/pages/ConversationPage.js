@@ -49,19 +49,22 @@ function ConversationPage({ itemOwnerId }) {
             me,
           });
         }
-
-        const conversationId = Talk.oneOnOneId(me, other);
+        console.log(me);
+        console.log(other);
+        const conversationId = `${itemOwnerId}-${Talk.oneOnOneId(me, other)}`;
         const conversation =
           window.talkSession.getOrCreateConversation(conversationId);
         conversation.setParticipant(me);
         conversation.setParticipant(other);
-
-        const chatbox = window.talkSession.createChatbox(conversation);
-        chatbox.mount(chatContainerRef.current);
-        addChatsToFirestore(conversationId, me.id, other.id);
+        let chatbox = null;
+        setTimeout(() => {
+          chatbox = window.talkSession.createChatbox(conversation);
+          chatbox.mount(chatContainerRef.current);
+          addChatsToFirestore(conversationId, me.id, other.id);
+        }, 2000); // Adds a delay of 2 seconds (2000 milliseconds)
 
         return () => {
-          chatbox.destroy();
+          chatbox && chatbox.destroy();
         };
       } catch (error) {
         console.error("Failed to create or fetch chat", error);
@@ -72,7 +75,7 @@ function ConversationPage({ itemOwnerId }) {
   }, [itemOwnerId]);
 
   return (
-    <div>
+    <div className="flex justify-center items-center">
       <div
         ref={chatContainerRef}
         className="h-[600px] w-[280px] sm:w-[500px] md:w-[600px] lg:w-[700px] mx-auto"

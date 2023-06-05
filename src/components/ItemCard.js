@@ -11,6 +11,9 @@ const ItemCard = ({ item, onItemCardClick }) => {
     "https://img.freepik.com/free-vector/flat-design-image-upload-landing-page_23-2148271993.jpg?w=1800&t=st=1685925210~exp=1685925810~hmac=c462a69438094be95540eb7ab7be30f53e853dcbdd3f4d44f304e7059846b09a";
   const [timeAgo, setTimeAgo] = useState("");
 
+  const IamTheOwner =
+    item.user?.uid === JSON.parse(localStorage.getItem("user")).uid;
+
   useEffect(() => {
     if (item.datePosted) {
       const milliseconds = Math.floor(item.datePosted.nanoseconds / 1000000);
@@ -50,7 +53,7 @@ const ItemCard = ({ item, onItemCardClick }) => {
               <div className="flex items-center opacity-50 text-sm">
                 <span>{timeAgo}</span>
               </div>
-              <DropdownMenu />
+              {IamTheOwner && <DropdownMenu id={item.id} />}
             </div>
           </div>
 

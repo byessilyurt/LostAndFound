@@ -1,4 +1,11 @@
-import { collection, addDoc, updateDoc, doc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db, getDocs } from "./index";
 import {
   getStorage,
@@ -14,6 +21,7 @@ const addItemToFirestore = async (item) => {
   try {
     const docRef = await addDoc(collection(db, "items"), item);
     console.log("Document written with ID: ", docRef.id);
+    return docRef.id; // Return the id
   } catch (e) {
     console.error("Error adding document: ", e);
   }
@@ -22,8 +30,23 @@ const addItemToFirestore = async (item) => {
 const getItemFromFirestore = async () => {
   const itemCol = collection(db, "items");
   const itemSnapshot = await getDocs(itemCol);
-  const itemList = itemSnapshot.docs.map((doc) => doc.data());
+  const itemList = itemSnapshot.docs.map((doc) => {
+    // get the data of the document
+    let data = doc.data();
+    // add a new field 'id' to the data which is the document's id
+    data.id = doc.id;
+    return data;
+  });
   return itemList;
+};
+
+const deleteItemFromFirestore = async (itemId) => {
+  try {
+    const itemRef = doc(db, "items", itemId);
+    await deleteDoc(itemRef);
+  } catch (error) {
+    console.error("Error deleting item: ", error);
+  }
 };
 
 const addUserToFirestore = async (user) => {
@@ -89,4 +112,5 @@ export {
   uploadProfilePic,
   defaultImage,
   addChatsToFirestore,
+  deleteItemFromFirestore,
 };

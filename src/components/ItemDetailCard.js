@@ -13,6 +13,7 @@ function ItemDetailCard({ item, onClose }) {
   const [timeAgo, setTimeAgo] = useState("");
   const IamTheOwner =
     item.user?.uid === JSON.parse(localStorage.getItem("user")).uid;
+  console.log(item);
 
   const [year, month, day] = item.dateLost ? item.dateLost.split("-") : [];
 
