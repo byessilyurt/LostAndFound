@@ -72,10 +72,21 @@ const uploadProfilePic = async (uid, file) => {
   );
 };
 
+const addChatsToFirestore = async (conversationId, user1Id, user2Id) => {
+  const docRef = doc(db, "usersChats", conversationId);
+
+  // Set the document with user1Id and user2Id
+  await setDoc(docRef, {
+    user1Id: user1Id,
+    user2Id: user2Id,
+  });
+};
+
 export {
   addItemToFirestore,
   getItemFromFirestore,
   addUserToFirestore,
   uploadProfilePic,
   defaultImage,
+  addChatsToFirestore,
 };

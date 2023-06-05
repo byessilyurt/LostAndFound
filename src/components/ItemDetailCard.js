@@ -8,11 +8,13 @@ function ItemDetailCard({ item, onClose }) {
   const navigate = useNavigate();
   const isLost = item.status === "lost";
   const statusColor = isLost ? "lostColor" : "foundColor";
+  const defaultImage =
+    "https://img.freepik.com/free-vector/flat-design-image-upload-landing-page_23-2148271993.jpg?w=1800&t=st=1685925210~exp=1685925810~hmac=c462a69438094be95540eb7ab7be30f53e853dcbdd3f4d44f304e7059846b09a";
   const [timeAgo, setTimeAgo] = useState("");
   const IamTheOwner =
     item.user?.uid === JSON.parse(localStorage.getItem("user")).uid;
 
-  const [year, month, day] = item.dateLost.split("-");
+  const [year, month, day] = item.dateLost ? item.dateLost.split("-") : [];
 
   // Rearrange the components in the "day/month/year" format
   const formattedDate = `${day}/${month}/${year}`;
@@ -61,7 +63,7 @@ function ItemDetailCard({ item, onClose }) {
         <div className="relative lg:w-3/5">
           <img
             className="w-full h-full object-cover object-center"
-            src={item.images && item.images[0]}
+            src={item.images && item.images[0] ? item.images[0] : defaultImage}
             alt={item.title}
           />
           <div
