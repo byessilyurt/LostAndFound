@@ -80,7 +80,7 @@ function HomePage() {
             key={index}
             onClick={() => handleTagClick(tag)}
             className={`inline-flex justify-center items-center gap-1 bg-gray-100 text-sm font-semibold text-gray-700 rounded-full px-4 py-1 max-w-full truncate mr-2 mt-2 ${
-              selectedTags.includes(tag) ? "bg-blue-400 " : ""
+              selectedTags.includes(tag) ? "bg-blue-400 " : "bg-gray-100"
             }`}
           >
             <HiOutlineHashtag className="w-4 h-4" />
